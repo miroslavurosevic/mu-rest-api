@@ -1,5 +1,6 @@
 package restapi;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,9 +18,9 @@ public class Controller {
 	}
 	
 	@GetMapping("/getBook")
-	public String getMovie(@RequestParam String isbn) {
+	public String getBook(@RequestParam String isbn) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> response = restTemplate.getForEntity("http://openlibrary.org/search.json?isbn="+isbn, String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity("http://openlibrary.org/isbn/"+isbn+".json", String.class);
 		return response.getBody();
 	}
 }
