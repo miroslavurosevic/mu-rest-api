@@ -30,21 +30,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		this.authenticationManager = authenticationManager;
 	}
 	
+	//Handles requests to /login endpoint
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException{
-		
 		try {
 			ApplicationUser creds = new ObjectMapper().readValue(req.getInputStream(), ApplicationUser.class);
-			
 			return authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							creds.getUsername(), 
-							creds.getPassword(),
-							new ArrayList())
-					
-
-			);
-		} catch (IOException e) {
+					new UsernamePasswordAuthenticationToken(creds.getUsername(), creds.getPassword(),new ArrayList()));
+		} catch (IOException e) {	
 			throw new RuntimeException(e);
 		}
 	}
@@ -59,6 +52,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.sign(HMAC512(SecurityConstants.SECRET.getBytes()));
 		res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 	}
-	
 	
 }
